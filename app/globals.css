@@ -1089,3 +1089,14 @@ a {
 .ribbon-vendida {
   background: #dc2626;
 }
+.navbar-logo img {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .navbar-logo img {
+    width: 105px;
+  }
+}
