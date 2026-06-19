@@ -57,10 +57,7 @@ Quedo atento a su confirmación.
             return;
         }
 
-        const url = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(
-            mensaje
-        )}`;
-
+        const url = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
         window.location.href = url;
     }
 
