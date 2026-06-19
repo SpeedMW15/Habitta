@@ -929,16 +929,6 @@ a {
   background: #fee2e2;
   color: #991b1b;
 }
-.schedule-button {
-  display: block;
-  text-align: center;
-  background: #1f2933;
-  color: white;
-  padding: 16px;
-  border-radius: 16px;
-  font-weight: 900;
-  margin-top: 12px;
-}
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -999,7 +989,7 @@ a {
   font-size: 28px;
   cursor: pointer;
 }
-.schedule-button {
+.schedule-open-button {
   width: 100%;
   border: none;
   display: block;
