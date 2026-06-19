@@ -81,6 +81,10 @@ export default function AdminPage() {
                         + Agregar propiedad
                     </Link>
 
+                    <Link href="/admin/citas" className="admin-add-button">
+                        📅 Ver citas
+                    </Link>
+
                     <button onClick={cerrarSesion}>
                         Cerrar sesión
                     </button>
