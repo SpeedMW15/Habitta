@@ -19,6 +19,7 @@ export default function PropertyCard({ propiedad }) {
               <span>{propiedad.estacionamientos} est.</span>
             </>
           )}
+
           <span>{propiedad.metros} m²</span>
         </div>
 
