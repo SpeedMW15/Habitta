@@ -83,16 +83,6 @@ export default async function PropertyPage({ params }) {
                     </a>
 
                     <ScheduleModal propiedad={propiedad} />
-
-                    <a
-                        href={`https://wa.me/527771546225?text=${encodeURIComponent(
-                            `Hola, me gustaría agendar una visita para conocer la propiedad "${propiedad.titulo}" ubicada en ${propiedad.ubicacion}. ¿Qué horarios tiene disponibles?`
-                        )}`}
-                        target="_blank"
-                        className="schedule-button"
-                    >
-                        Agendar visita
-                    </a>
                 </aside>
             </section>
 

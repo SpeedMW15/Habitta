@@ -38,13 +38,11 @@ Mi teléfono es: ${form.telefono}
 Quedo atento a su confirmación.
 `;
 
-        const esCelular = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const url = `https://api.whatsapp.com/send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(
+            mensaje
+        )}`;
 
-        const url = esCelular
-            ? `whatsapp://send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(mensaje)}`
-            : `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`;
-
-        window.open(url, "_blank");
+        window.location.href = url;
     }
 
     return (
