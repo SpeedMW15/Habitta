@@ -75,7 +75,7 @@ export default async function PropertyPage({ params }) {
                     <p>Contacta a la asesora para recibir más información.</p>
 
                     <a
-                        href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(mensaje)}`}
+                        href={`https://api.whatsapp.com/send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(mensaje)}`}
                         target="_blank"
                         className="whatsapp-button"
                     >
