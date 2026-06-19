@@ -1061,3 +1061,31 @@ a {
     grid-template-columns: 1fr;
   }
 }
+.property-card {
+  position: relative;
+}
+
+.property-ribbon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
+.ribbon-disponible {
+  background: #16a34a;
+}
+
+.ribbon-apartada {
+  background: #d97706;
+}
+
+.ribbon-vendida {
+  background: #dc2626;
+}

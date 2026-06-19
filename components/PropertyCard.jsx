@@ -3,6 +3,9 @@ import Link from "next/link";
 export default function PropertyCard({ propiedad }) {
   return (
     <article className="property-card">
+      <div className={`property-ribbon ribbon-${propiedad.estado?.toLowerCase()}`}>
+        {propiedad.estado || "Disponible"}
+      </div>
       <img src={propiedad.imagen} alt={propiedad.titulo} />
 
       <div className="property-info">
