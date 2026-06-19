@@ -9,6 +9,7 @@ export default function AdminPage() {
     const router = useRouter();
     const [propiedades, setPropiedades] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [totalCitas, setTotalCitas] = useState(0);
 
     async function cargarPropiedades() {
         const { data, error } = await supabase
@@ -38,6 +39,11 @@ export default function AdminPage() {
 
         setPropiedades(propiedadesConImagen);
         setLoading(false);
+        const { count } = await supabase
+            .from("citas")
+            .select("*", { count: "exact", head: true });
+
+        setTotalCitas(count || 0);
     }
 
     async function eliminarPropiedad(id) {
@@ -88,6 +94,33 @@ export default function AdminPage() {
                     <button onClick={cerrarSesion}>
                         Cerrar sesión
                     </button>
+                </div>
+            </section>
+
+            <section className="stats-grid">
+                <div className="stat-card">
+                    <p>Total propiedades</p>
+                    <h2>{propiedades.length}</h2>
+                </div>
+
+                <div className="stat-card">
+                    <p>Disponibles</p>
+                    <h2>{propiedades.filter((p) => p.estado === "Disponible").length}</h2>
+                </div>
+
+                <div className="stat-card">
+                    <p>Apartadas</p>
+                    <h2>{propiedades.filter((p) => p.estado === "Apartada").length}</h2>
+                </div>
+
+                <div className="stat-card">
+                    <p>Vendidas</p>
+                    <h2>{propiedades.filter((p) => p.estado === "Vendida").length}</h2>
+                </div>
+
+                <div className="stat-card">
+                    <p>Citas recibidas</p>
+                    <h2>{totalCitas}</h2>
                 </div>
             </section>
 
