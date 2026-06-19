@@ -39,7 +39,7 @@ Mi teléfono es: ${form.telefono}
 
 Quedo atento a su confirmación.
 `;
-        const url = `https://api.whatsapp.com/send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(
+        const url = `whatsapp://send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(
             mensaje
         )}`;
 

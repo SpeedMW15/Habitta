@@ -75,8 +75,7 @@ export default async function PropertyPage({ params }) {
                     <p>Contacta a la asesora para recibir más información.</p>
 
                     <a
-                        href={`https://api.whatsapp.com/send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(mensaje)}`}
-                        target="_blank"
+                        href={`whatsapp://send?phone=${SITE_CONFIG.whatsapp}&text=${encodeURIComponent(mensaje)}`}
                         className="whatsapp-button"
                     >
                         Contactar por WhatsApp
