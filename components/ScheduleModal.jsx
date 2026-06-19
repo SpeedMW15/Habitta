@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SITE_CONFIG } from "@/config/site";
+import { supabase } from "@/lib/supabase";
 
 export default function ScheduleModal({ propiedad }) {
     const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function ScheduleModal({ propiedad }) {
         });
     }
 
-    function enviarWhatsApp(e) {
+    async function enviarWhatsApp(e) {
         e.preventDefault();
 
         const mensaje = `
@@ -39,12 +40,28 @@ Mi teléfono es: ${form.telefono}
 
 Quedo atento a su confirmación.
 `;
+
+        const { error } = await supabase.from("citas").insert([
+            {
+                propiedad_id: propiedad.id,
+                nombre: form.nombre,
+                telefono: form.telefono,
+                fecha: form.fecha,
+                hora: form.hora,
+                mensaje,
+            },
+        ]);
+
+        if (error) {
+            alert("No se pudo guardar la cita: " + error.message);
+            return;
+        }
+
         const url = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(
             mensaje
         )}`;
 
         window.location.href = url;
-
     }
 
     return (
