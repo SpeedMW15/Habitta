@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
 
 export default function NuevaPropiedadPage() {
     const [form, setForm] = useState({
@@ -22,21 +22,22 @@ export default function NuevaPropiedadPage() {
 
     const [resultadoIA, setResultadoIA] = useState("");
     const [loading, setLoading] = useState(false);
+    const [guardando, setGuardando] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-  async function verificarSesion() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
+        async function verificarSesion() {
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
 
-    if (!session) {
-      router.push("/admin/login");
-    }
-  }
+            if (!session) {
+                router.push("/admin/login");
+            }
+        }
 
-  verificarSesion();
-}, [router]);
+        verificarSesion();
+    }, [router]);
     function actualizarCampo(e) {
         setForm({
             ...form,
@@ -92,6 +93,18 @@ export default function NuevaPropiedadPage() {
     }
 
     async function guardarPropiedad() {
+        if (!form.titulo || !form.precio || !form.ubicacion) {
+            alert("Completa todos los campos obligatorios.");
+
+            return;
+        }
+
+        if (form.imagenes.length === 0) {
+            alert("Debes seleccionar al menos una imagen.");
+
+            return;
+        }
+        setGuardando(true);
         const { data, error } = await supabase
             .from("propiedades")
             .insert([
@@ -112,30 +125,52 @@ export default function NuevaPropiedadPage() {
             .single();
 
         if (error) {
-            alert("Error al guardar propiedad: " + error.message);
+            setGuardando(false);
+            console.error(error);
+            alert("Error al guardar la propiedad:\n\n" + error.message);
             return;
         }
 
+        // Subir imágenes
         const urlsImagenes = await subirImagenes(data.id);
 
-        if (urlsImagenes.length > 0) {
-            const imagenesData = urlsImagenes.map((url, index) => ({
-                propiedad_id: data.id,
-                url,
-                orden: index + 1,
-            }));
-
-            const { error: errorImagenes } = await supabase
-                .from("imagenes_propiedad")
-                .insert(imagenesData);
-
-            if (errorImagenes) {
-                alert("Propiedad guardada, pero hubo error guardando imágenes.");
-                return;
-            }
+        if (urlsImagenes.length === 0) {
+            setGuardando(false);
+            alert("No se pudieron subir las imágenes.");
+            return;
         }
 
-        alert("Propiedad guardada correctamente con imágenes");
+        const imagenesData = urlsImagenes.map((url, index) => ({
+            propiedad_id: data.id,
+            url,
+            orden: index + 1,
+        }));
+
+        console.log("Imágenes a insertar:", imagenesData);
+
+        const { error: errorImagenes } = await supabase
+            .from("imagenes_propiedad")
+            .insert(imagenesData);
+
+        if (errorImagenes) {
+            console.error("ERROR INSERTANDO IMÁGENES:", errorImagenes);
+
+            alert(
+                "Error guardando imágenes:\n\n" +
+                errorImagenes.message
+            );
+
+            setGuardando(false);
+            return;
+        }
+
+        console.log("Imágenes guardadas correctamente.");
+
+        setGuardando(false);
+
+        alert("✅ Propiedad guardada correctamente.");
+
+        router.push("/admin");
     }
 
     return (
@@ -285,8 +320,12 @@ export default function NuevaPropiedadPage() {
                         )}
                     </label>
 
-                    <button type="button" onClick={guardarPropiedad}>
-                        Guardar propiedad
+                    <button
+                        type="button"
+                        onClick={guardarPropiedad}
+                        disabled={guardando}
+                    >
+                        {guardando ? "Guardando..." : "Guardar propiedad"}
                     </button>
                 </form>
                 <div className="preview-panel">
@@ -294,7 +333,11 @@ export default function NuevaPropiedadPage() {
 
                     <article className="property-card preview-card">
                         <img
-                            src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200"
+                            src={
+                                form.imagenes.length > 0
+                                    ? URL.createObjectURL(form.imagenes[0])
+                                    : "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200"
+                            }
                             alt="Vista previa"
                         />
 
